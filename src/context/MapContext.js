@@ -78,6 +78,16 @@ export const MapProvider = ({ children }) => {
         savedCallback.current = runGeneration
     }, [runGeneration]);
 
+    const randomSeeds = () => {
+        const cloneData = [...data];
+        let randI = Math.floor(Math.random() * cloneData.length);
+        cloneData[randI] = 1;
+        randI = Math.floor(Math.random() * cloneData.length);
+        cloneData[randI] = 2;
+
+        setData(cloneData);
+    };
+
     return (
         <MapContext.Provider value={{
             height, setHeight,
@@ -87,7 +97,8 @@ export const MapProvider = ({ children }) => {
             resetData,
             runGeneration,
             runUntilDone,
-            mapRef
+            mapRef,
+            randomSeeds
         }}>
             { children }
         </MapContext.Provider>

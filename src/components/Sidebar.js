@@ -10,7 +10,8 @@ export const Sidebar = () => {
          resetData, 
          runGeneration,
          runUntilDone,
-         mapRef
+         mapRef,
+         randomSeeds
     } = useContext(MapContext);
 
     const exportImage = async () => {
@@ -61,6 +62,7 @@ export const Sidebar = () => {
                 </ul>
                    
             </label>
+            <button onClick={randomSeeds}>random seeds</button>
             <button onClick={resetData}>reset</button>
             <button onClick={runGeneration}>run generation</button>
             <button onClick={runUntilDone}>run all</button>

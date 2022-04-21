@@ -6,6 +6,10 @@
     border-left: 2px solid white;
     color: white;
     font-weight: bold;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
 
     .field {
         display: flex;
