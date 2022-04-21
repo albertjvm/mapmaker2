@@ -1,0 +1,26 @@
+.Map {
+    flex: 1;
+    display: grid;
+    background-color: #aaa;
+    // gap: 1px;
+
+    .Map-Tile {
+
+        &.type-0 {
+            background-color: #999;
+            border: 1px solid #aaa;
+        }
+
+        &.type-1 {
+            background-color: green;
+        }
+
+        &.type-2 {
+            background-color: royalblue;
+        }
+
+        &:hover {
+            opacity: .5;
+        }
+    }
+}
