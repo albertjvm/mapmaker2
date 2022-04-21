@@ -9,8 +9,8 @@ const TILE_TYPES = {
 }
 
 export const MapProvider = ({ children }) => {
-    const [ height, setHeight ] = useState(30);
-    const [ width, setWidth ] = useState(50);
+    const [ height, setHeight ] = useState(60);
+    const [ width, setWidth ] = useState(100);
     const [ data, setData ] = useState([]);
     const mapRef = useRef();
     const savedCallback = useRef();
