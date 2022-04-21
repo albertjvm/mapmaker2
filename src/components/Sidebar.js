@@ -39,7 +39,8 @@ export const Sidebar = () => {
                 <input 
                     type="number"
                     value={width}
-                    onChange={e => setWidth(parseInt(e.target.value))}
+                    min="10"
+                    onChange={e => setWidth(parseInt(e.target.value) || 10)}
                 />
             </div>
             <div className='field'>
@@ -47,7 +48,8 @@ export const Sidebar = () => {
                 <input 
                     type="number"
                     value={height}
-                    onChange={e => setHeight(parseInt(e.target.value))}
+                    min="10"
+                    onChange={e => setHeight(parseInt(e.target.value) || 10)}
                 />
             
             </div>
