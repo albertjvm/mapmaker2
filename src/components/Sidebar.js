@@ -53,13 +53,11 @@ export const Sidebar = () => {
             </div>
             <label>
                 <h4>Instructions:</h4>
-                <ul>
-                    <li>Click in the grid to seed the generator.</li>
-                    <li>Click once for land, twice for water.</li>
-                    <li>Then either run one generation at a time if you want to continue to have input as the map fills in.</li>
-                    <li>OR click run all and watch the generator do it's work.</li>
+                <ol>
+                    <li>Seed the map generator by clicking 'random seeds' a few times or by clicking in the grid. (Click once for land, twice for water)</li>
+                    <li>Either run one generation at a time if you want to continue to have input as the map fills in OR click run all and watch the generator do it's work.</li>
                     <li>Export when you're done to download a png</li>
-                </ul>
+                </ol>
                    
             </label>
             <button onClick={randomSeeds}>random seeds</button>
