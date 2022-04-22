@@ -5,8 +5,17 @@ export const MapContext = React.createContext();
 const TILE_TYPES = {
     NONE: 0,
     LAND: 1,
-    WATER: 2
-}
+    WATER: 2,
+    MOUNTAIN: 3,
+    FOREST: 4,
+};
+
+const GENERATION_SPEED = {
+    [TILE_TYPES.LAND]: .15,
+    [TILE_TYPES.WATER]: .1,
+    [TILE_TYPES.MOUNTAIN]: .05,
+    [TILE_TYPES.FOREST]: .05,
+};
 
 export const MapProvider = ({ children }) => {
     const [ height, setHeight ] = useState(60);
@@ -15,8 +24,10 @@ export const MapProvider = ({ children }) => {
     const mapRef = useRef();
     const savedCallback = useRef();
     const isDone = useRef(false);
+    const timer = useRef();
 
     const resetData = useCallback(() => {
+        clearInterval(timer.current);
         setData(new Array(height * width).fill(TILE_TYPES.NONE));
     }, [height, width]);
 
@@ -25,9 +36,13 @@ export const MapProvider = ({ children }) => {
     }, [height, resetData, width])
 
     const toggleTileByIndex = (i) => {
+        setTileByIndex(i, (data[i] + 1) % Object.keys(TILE_TYPES).length);
+    };
+
+    const setTileByIndex = (i, value) => {
         setData([
             ...data.slice(0, i),
-            (data[i] + 1) % Object.keys(TILE_TYPES).length,
+            value,
             ...data.slice(i + 1)
         ]);
     };
@@ -36,7 +51,7 @@ export const MapProvider = ({ children }) => {
         const cloneData = [...data];
 
         const updateTile = (index, value) => {
-            if (Math.random() > .1) return;
+            if (Math.random() > GENERATION_SPEED[value]) return;
             if (index >= 0 && index < cloneData.length && cloneData[index] === 0) cloneData[index] = value; 
         }
 
@@ -61,6 +76,8 @@ export const MapProvider = ({ children }) => {
     }, [data]);
 
     const runUntilDone = () => {
+        if (data.every(d => d === 0)) return;
+        
         const run = () => {
             if (!isDone.current) {
                 savedCallback.current();
@@ -69,36 +86,88 @@ export const MapProvider = ({ children }) => {
             }
         };
 
-        const timer = setInterval(run , 100);
+        timer.current = setInterval(run , 100);
 
-        return () => clearInterval(timer);
+        return () => clearInterval(timer.current);
     };
 
     useEffect(() => {
         savedCallback.current = runGeneration
     }, [runGeneration]);
 
+    const SEED_TYPES = [
+        TILE_TYPES.LAND,
+        TILE_TYPES.WATER,
+        TILE_TYPES.MOUNTAIN,
+        TILE_TYPES.FOREST,
+    ];
     const randomSeeds = () => {
         const cloneData = [...data];
-        let randI = Math.floor(Math.random() * cloneData.length);
-        cloneData[randI] = 1;
-        randI = Math.floor(Math.random() * cloneData.length);
-        cloneData[randI] = 2;
+
+        SEED_TYPES.forEach(type => {
+            let randI = Math.floor(Math.random() * cloneData.length);
+            cloneData[randI] = cloneData[randI] || type;
+        });
+
+        setData(cloneData);
+    };
+
+    const addWaterBorderTop = () => {
+        const cloneData = [...data];
+
+        [...Array(width).keys()].forEach(i => {
+            cloneData[i] = TILE_TYPES.WATER;
+        });
+
+        setData(cloneData);
+    };
+
+    const addWaterBorderBottom = () => {
+        const cloneData = [...data];
+
+        [...Array(width).keys()].forEach(i => {
+            cloneData[(height - 1) * width + i] = TILE_TYPES.WATER;
+        });
+
+        setData(cloneData);
+    };
+
+    const addWaterBorderLeft = () => {
+        const cloneData = [...data];
+
+        [...Array(height).keys()].forEach(i => {
+            cloneData[i * width] = TILE_TYPES.WATER;
+        });
+
+        setData(cloneData);
+    };
+
+    const addWaterBorderRight = () => {
+        const cloneData = [...data];
+
+        [...Array(height).keys()].forEach(i => {
+            cloneData[i * width + width - 1] = TILE_TYPES.WATER;
+        });
 
         setData(cloneData);
     };
 
     return (
         <MapContext.Provider value={{
-            height, setHeight,
-            width, setWidth,
+            height: height, setHeight,
+            width: width, setWidth,
             data,
             toggleTileByIndex,
+            setTileByIndex,
             resetData,
             runGeneration,
             runUntilDone,
             mapRef,
-            randomSeeds
+            randomSeeds,
+            addWaterBorderTop,
+            addWaterBorderBottom,
+            addWaterBorderLeft,
+            addWaterBorderRight
         }}>
             { children }
         </MapContext.Provider>

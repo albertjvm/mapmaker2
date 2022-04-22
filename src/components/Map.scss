@@ -1,23 +1,20 @@
+@import '../colors.scss';
+
 .Map {
     flex: 1;
     display: grid;
-    background-color: #aaa;
-    // gap: 1px;
 
     .Map-Tile {
 
         &.type-0 {
-            background-color: #999;
-            border: 1px solid #aaa;
+            background-color: $default;
+            border: 1px solid lighten($default, 10%);
         }
 
-        &.type-1 {
-            background-color: green;
-        }
-
-        &.type-2 {
-            background-color: royalblue;
-        }
+        &.type-1 { background-color: $land; }
+        &.type-2 { background-color: $water; }
+        &.type-3 { background-color: $mountain; }
+        &.type-4 { background-color: $forest; }
 
         &:hover {
             opacity: .5;

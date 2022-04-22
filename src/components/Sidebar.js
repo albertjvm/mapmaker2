@@ -1,7 +1,9 @@
 import { useContext } from 'react';
 import html2canvas from 'html2canvas';
 import { MapContext } from '../context/MapContext';
+import { BRUSHES, BrushContext } from '../context/BrushContext';
 import './Sidebar.scss';
+import { TextInput } from './TextInput';
 
 export const Sidebar = () => {
     const { 
@@ -11,8 +13,14 @@ export const Sidebar = () => {
          runGeneration,
          runUntilDone,
          mapRef,
-         randomSeeds
+         randomSeeds,
+         addWaterBorderTop,
+         addWaterBorderBottom,
+         addWaterBorderLeft,
+         addWaterBorderRight
     } = useContext(MapContext);
+
+    const { brush, setBrush, coords } = useContext(BrushContext);
 
     const exportImage = async () => {
         const canvas = await html2canvas(mapRef.current);
@@ -36,23 +44,45 @@ export const Sidebar = () => {
         <div className="Sidebar">
             <div className='field'>
                 <label>width</label>
-                <input 
+                <TextInput 
                     type="number"
                     value={width}
                     min="10"
-                    onChange={e => setWidth(parseInt(e.target.value) || 10)}
+                    max="200"
+                    onChange={v => setWidth(Math.min(Math.max(v || 10, 10), 200))}
                 />
             </div>
             <div className='field'>
                 <label>height</label>
-                <input 
+                <TextInput 
                     type="number"
                     value={height}
                     min="10"
-                    onChange={e => setHeight(parseInt(e.target.value) || 10)}
+                    max="100"
+                    onChange={v => setHeight(Math.min(Math.max(v || 10, 10), 100))}
                 />
             
             </div>
+
+            <div className='Brushes'>
+                <label>Brushes</label>
+                {Object.values(BRUSHES).map(b => (
+                    <button 
+                    key={`brush-${b}`}
+                        className={`brush-${b} ${brush === b ? 'active' : ''}`} 
+                        onClick={() => setBrush(b)}
+                    />
+                ))}
+            </div>
+
+            <div className='Borders'>
+                <label>Add Water Border</label>
+                <button onClick={addWaterBorderTop}>top</button>
+                <button onClick={addWaterBorderRight}>right</button>
+                <button onClick={addWaterBorderBottom}>bottom</button>
+                <button onClick={addWaterBorderLeft}>left</button>
+            </div>
+
             <label>
                 <h4>Instructions:</h4>
                 <ol>
@@ -67,6 +97,8 @@ export const Sidebar = () => {
             <button onClick={runGeneration}>run generation</button>
             <button onClick={runUntilDone}>run all</button>
             <button onClick={exportImage}>export</button>
+
+            <span>{coords}</span>
         </div>
     );
 };
