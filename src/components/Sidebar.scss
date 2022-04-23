@@ -64,6 +64,29 @@
         flex-direction: column;
     }
 
+    .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .Slider {
+        flex: 1;
+        margin-bottom: 15px;
+    }
+
+    .tile {
+        height: 30px;
+        width: 30px;
+
+        &.tile-1 { background-color: $land; }
+        &.tile-2 { background-color: $water; }
+        &.tile-3 { background-color: $mountain; }
+        &.tile-4 { background-color: $forest; }
+        &.tile-5 { background-color: $snow; }
+        &.tile-6 { background-color: $desert; }
+    }
+
     button.Brush {
         height: 30px;
         width: 30px;
@@ -79,9 +102,7 @@
         &.brush--1 {
             background-color: black;
         }
-        &.brush-1 {
-            background-color: $land;
-        }
+        &.brush-1 { background-color: $land; }
         &.brush-2 { background-color: $water; }
         &.brush-3 { background-color: $mountain; }
         &.brush-4 { background-color: $forest; }

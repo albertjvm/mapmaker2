@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import html2canvas from 'html2canvas';
-import { MapContext } from '../context/MapContext';
+import { TILE_TYPES, SPEEDS, MapContext } from '../context/MapContext';
 import { BRUSHES, BrushContext } from '../context/BrushContext';
 import './Sidebar.scss';
 import { TextInput } from './TextInput';
 import { Panel } from './Panel';
+import { Slider } from './Slider';
 
 const maxW = 2000;
 const maxH = 1200;
@@ -21,7 +21,8 @@ export const Sidebar = () => {
          addWaterBorderTop,
          addWaterBorderBottom,
          addWaterBorderLeft,
-         addWaterBorderRight
+         addWaterBorderRight,
+         weights, updateWeight
     } = useContext(MapContext);
 
     const { brush, setBrush, coords } = useContext(BrushContext);
@@ -93,13 +94,35 @@ export const Sidebar = () => {
                 </div>
             </Panel>
 
+            <Panel title="Generate">
+                <div className='column'>
+                    {Object.values(TILE_TYPES).slice(1).map(type => (
+                        <div className='row'>
+                            <span className={`tile tile-${type}`} />
+                            <Slider
+                                options={SPEEDS.map((s, i) => ({name: i+1, value: s}))}
+                                valueKey='value'
+                                displayKey='name'
+                                value={weights[type]}
+                                onChange={v => updateWeight(type, v)} 
+                            />
+                        </div>
+                    ))}
+                    <button onClick={runGeneration}>run generation</button>
+                    <button onClick={runUntilDone}>run all</button>
+                </div>
+            </Panel>
+
             <Panel title="Commands">
                 <div className='column'>
                     <button onClick={randomSeeds}>random seeds</button>
-                    <button onClick={resetData}>reset</button>
-                    <button onClick={runGeneration}>run generation</button>
-                    <button onClick={runUntilDone}>run all</button>
                     <button onClick={exportImage}>export</button>
+                </div>
+            </Panel>
+            
+            <Panel>
+                <div className='column'>
+                    <button onClick={resetData}>reset</button>
                 </div>
             </Panel>
 

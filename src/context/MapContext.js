@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 export const MapContext = React.createContext();
 
-const TILE_TYPES = {
+export const TILE_TYPES = {
     NONE: 0,
     LAND: 1,
     WATER: 2,
@@ -12,23 +12,33 @@ const TILE_TYPES = {
     DESERT: 6,
 };
 
-const GENERATION_SPEED = {
-    [TILE_TYPES.LAND]: .15,
-    [TILE_TYPES.WATER]: .1,
-    [TILE_TYPES.MOUNTAIN]: .05,
-    [TILE_TYPES.FOREST]: .05,
-    [TILE_TYPES.SNOW]: .05,
-    [TILE_TYPES.DESERT]: .05,
-};
+export const SPEEDS = [
+    .01, .02, .03, .04, .05, .1, .15
+];
 
 export const MapProvider = ({ children }) => {
-    const [ height, setHeight ] = useState(60);
-    const [ width, setWidth ] = useState(100);
+    const [ weights, setWeights ] = useState({
+        [TILE_TYPES.LAND]: SPEEDS[6],
+        [TILE_TYPES.WATER]: SPEEDS[5],
+        [TILE_TYPES.MOUNTAIN]: SPEEDS[4],
+        [TILE_TYPES.FOREST]: SPEEDS[4],
+        [TILE_TYPES.SNOW]: SPEEDS[5],
+        [TILE_TYPES.DESERT]: SPEEDS[4],
+    });
+    const [ height, setHeight ] = useState(120);
+    const [ width, setWidth ] = useState(200);
     const [ data, setData ] = useState([]);
     const mapRef = useRef();
     const savedCallback = useRef();
     const isDone = useRef(false);
     const timer = useRef();
+
+    const updateWeight = (type, value) => {
+        setWeights({
+            ...weights,
+            [type]: value
+        });
+    };
 
     const resetData = useCallback(() => {
         clearInterval(timer.current);
@@ -55,7 +65,7 @@ export const MapProvider = ({ children }) => {
         const cloneData = [...data];
 
         const updateTile = (index, value) => {
-            if (Math.random() > GENERATION_SPEED[value]) return;
+            if (Math.random() > weights[value]) return;
             if (index >= 0 && index < cloneData.length && cloneData[index] === 0) {
                 cloneData[index] = value; 
             }
@@ -175,7 +185,8 @@ export const MapProvider = ({ children }) => {
             addWaterBorderTop,
             addWaterBorderBottom,
             addWaterBorderLeft,
-            addWaterBorderRight
+            addWaterBorderRight,
+            weights, updateWeight
         }}>
             { children }
         </MapContext.Provider>

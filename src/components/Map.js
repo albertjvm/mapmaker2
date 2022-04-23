@@ -74,6 +74,7 @@ export const Map = () => {
                 height={height} 
                 width={width} 
                 onMouseMove={handleMouseOver} 
+                onTouchMove={handleCanvasClick}
                 onClick={handleCanvasClick}
             />
         </div>

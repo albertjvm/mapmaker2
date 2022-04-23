@@ -3,7 +3,7 @@ import React, { useState } from "react";
 export const BrushContext = React.createContext();
 
 export const BRUSHES = {
-    DEFAULT: -1,
+    // DEFAULT: -1,
     DELETE: 0,
     LAND: 1,
     WATER: 2,
@@ -14,7 +14,7 @@ export const BRUSHES = {
 };
 
 export const BrushProvider = ({ children }) => {
-    const [ brush, setBrush ] = useState(BRUSHES.DEFAULT);
+    const [ brush, setBrush ] = useState(BRUSHES.LAND);
     const [ coords, setCoords ] = useState('');
 
     return (

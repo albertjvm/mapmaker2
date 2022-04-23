@@ -1,0 +1,78 @@
+$color: #bbb;
+$active: black;
+$hover: white;
+
+.Slider {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: 30px;
+    padding-bottom: 8px;
+
+    .option {
+        cursor: pointer;
+        flex: 1;
+        position: relative;
+        width: 8px;
+        
+        &:before {
+            content: '';
+            position: absolute;
+            top: calc(50% - 2px);
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: $color;
+        }
+
+        &:first-of-type {
+            &:before {
+                width: 50%;
+                left: 50%;
+            }
+        }
+
+        &:last-of-type {
+            &:before {
+                width: 50%;
+            }
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 75%;
+            background-color: $color;
+            top: 0;
+            left: 50%;
+            transform: translate(-2px, 12.5%);
+        }
+
+        &:hover {
+            &:after {
+                background-color: $hover;
+            }
+            .value {
+                color: $hover;
+            }
+        }
+
+        &.active {
+            &:after {
+                background-color: $active;
+            }
+            .value { 
+                color: $active;
+            }
+        }
+
+        .value {
+            position: absolute;
+            transform: translateX(-50%);
+            top: 25px;
+            color: $color;
+            font-size: small;
+        }
+    }
+}
