@@ -56,6 +56,7 @@
     .grid4 {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
+        row-gap: 8px;
     }
 
     .column {
@@ -84,6 +85,8 @@
         &.brush-2 { background-color: $water; }
         &.brush-3 { background-color: $mountain; }
         &.brush-4 { background-color: $forest; }
+        &.brush-5 { background-color: $snow; }
+        &.brush-6 { background-color: $desert; }
 
         &:after {
             content: '';

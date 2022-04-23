@@ -9,6 +9,8 @@ export const BRUSHES = {
     WATER: 2,
     MOUNTAIN: 3,
     FOREST: 4,
+    SNOW: 5,
+    DESERT: 6,
 };
 
 export const BrushProvider = ({ children }) => {

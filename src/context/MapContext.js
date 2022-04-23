@@ -8,6 +8,8 @@ const TILE_TYPES = {
     WATER: 2,
     MOUNTAIN: 3,
     FOREST: 4,
+    SNOW: 5,
+    DESERT: 6,
 };
 
 const GENERATION_SPEED = {
@@ -15,6 +17,8 @@ const GENERATION_SPEED = {
     [TILE_TYPES.WATER]: .1,
     [TILE_TYPES.MOUNTAIN]: .05,
     [TILE_TYPES.FOREST]: .05,
+    [TILE_TYPES.SNOW]: .05,
+    [TILE_TYPES.DESERT]: .05,
 };
 
 export const MapProvider = ({ children }) => {
@@ -52,7 +56,9 @@ export const MapProvider = ({ children }) => {
 
         const updateTile = (index, value) => {
             if (Math.random() > GENERATION_SPEED[value]) return;
-            if (index >= 0 && index < cloneData.length && cloneData[index] === 0) cloneData[index] = value; 
+            if (index >= 0 && index < cloneData.length && cloneData[index] === 0) {
+                cloneData[index] = value; 
+            }
         }
 
         data.forEach((d, i) => {
@@ -64,7 +70,7 @@ export const MapProvider = ({ children }) => {
                     updateTile(i + 1, d);
                 }
                 updateTile(i - width, d);
-                updateTile(i + width, d);
+                updateTile(i + parseInt(width), d);
             }
         });
 
@@ -100,6 +106,7 @@ export const MapProvider = ({ children }) => {
         TILE_TYPES.WATER,
         TILE_TYPES.MOUNTAIN,
         TILE_TYPES.FOREST,
+        TILE_TYPES.DESERT,
     ];
     const randomSeeds = () => {
         const cloneData = [...data];
@@ -144,6 +151,7 @@ export const MapProvider = ({ children }) => {
 
     const addWaterBorderRight = () => {
         const cloneData = [...data];
+        console.log(width);
 
         [...Array(height).keys()].forEach(i => {
             cloneData[i * width + width - 1] = TILE_TYPES.WATER;

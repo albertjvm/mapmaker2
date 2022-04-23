@@ -6,6 +6,9 @@ import './Sidebar.scss';
 import { TextInput } from './TextInput';
 import { Panel } from './Panel';
 
+const maxW = 2000;
+const maxH = 1200;
+
 export const Sidebar = () => {
     const { 
         height, setHeight,
@@ -51,7 +54,8 @@ export const Sidebar = () => {
                         value={width}
                         min="10"
                         max="200"
-                        onChange={v => setWidth(Math.min(Math.max(v || 10, 10), 200))}
+                        onChange={v => setWidth(Math.min(Math.max(v || 10, 10), maxW))}
+                        // onChange={v => setWidth(parseInt(v) || 10)}
                     />
                 </div>
                 <div className='field'>
@@ -61,7 +65,8 @@ export const Sidebar = () => {
                         value={height}
                         min="10"
                         max="100"
-                        onChange={v => setHeight(Math.min(Math.max(v || 10, 10), 100))}
+                        onChange={v => setHeight(Math.min(Math.max(v || 10, 10), maxH))}
+                        // onChange={v => setHeight(parseInt(v) || 10)}
                     />
                 
                 </div>
