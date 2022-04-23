@@ -27,7 +27,7 @@ export const Sidebar = () => {
     const { brush, setBrush, coords } = useContext(BrushContext);
 
     const exportImage = async () => {
-        const canvas = await html2canvas(mapRef.current);
+        const canvas = mapRef.current;
   
         const data = canvas.toDataURL('image/png');
         const link = document.createElement('a');
