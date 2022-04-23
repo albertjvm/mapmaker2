@@ -38,7 +38,6 @@
         font-size: medium;
         color: white;
         background-color: rgba(white,.3);
-        margin: 4px 0;
         cursor: pointer;
 
         &:hover {
@@ -54,64 +53,54 @@
         font-size: small;
     }
 
-    .Brushes {
+    .grid4 {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        margin: 20px 0;
-
-        label {
-            grid-column: 1 / -1;
-        }
-
-        button {
-            height: 30px;
-            width: 30px;
-            align-self: center;
-            justify-self: center;
-            position: relative;
-            border: 3px solid $default;
-
-            &.active {
-                border-color: white;
-            }
-
-            &.brush--1 {
-                background-color: black;
-            }
-            &.brush-1 {
-                background-color: $land;
-            }
-            &.brush-2 { background-color: $water; }
-            &.brush-3 { background-color: $mountain; }
-            &.brush-4 { background-color: $forest; }
-
-            &:after {
-                content: '';
-                background-color: rgba(white, .3);
-                visibility: hidden;
-                height: 100%;
-                width: 100%;
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: 2;
-            }
-
-            &:hover {
-                &:after {
-                    visibility: visible;
-                }
-            }
-        }
     }
 
-    .Borders {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        margin: 20px 0;
+    .column {
+        display: flex;
+        flex-direction: column;
+    }
 
-        label {
-            grid-column: 1 / -1;
+    button.Brush {
+        height: 30px;
+        width: 30px;
+        align-self: center;
+        justify-self: center;
+        position: relative;
+        border: 3px solid $default;
+
+        &.active {
+            border-color: white;
+        }
+
+        &.brush--1 {
+            background-color: black;
+        }
+        &.brush-1 {
+            background-color: $land;
+        }
+        &.brush-2 { background-color: $water; }
+        &.brush-3 { background-color: $mountain; }
+        &.brush-4 { background-color: $forest; }
+
+        &:after {
+            content: '';
+            background-color: rgba(white, .3);
+            visibility: hidden;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+        }
+
+        &:hover {
+            &:after {
+                visibility: visible;
+            }
         }
     }
 }

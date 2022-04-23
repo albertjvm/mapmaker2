@@ -1,0 +1,17 @@
+.Panel {
+    margin: 8px;
+    padding: 12px;
+    border: 1px solid #aaa;
+    border-radius: 16px;
+    position: relative;
+
+    & > label {
+        color: #aaa;
+        background-color: gray;
+        position: absolute;
+        top: 0;
+        left: 16px;
+        padding: 0 4px;
+        transform: translateY(-50%);
+    }
+}
