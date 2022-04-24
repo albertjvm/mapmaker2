@@ -85,7 +85,7 @@ export const MapProvider = ({ children }) => {
         });
 
         setData(cloneData);
-    }, [data, width]);
+    }, [data, weights, width]);
 
     useEffect(() => {
         isDone.current = !data.includes(0);
