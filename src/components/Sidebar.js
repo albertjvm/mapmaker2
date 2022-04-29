@@ -12,17 +12,19 @@ const maxH = 1200;
 export const Sidebar = () => {
     const { 
         height, setHeight,
-         width, setWidth, 
-         resetData, 
-         runGeneration,
-         runUntilDone,
-         mapRef,
-         randomSeeds,
-         addWaterBorderTop,
-         addWaterBorderBottom,
-         addWaterBorderLeft,
-         addWaterBorderRight,
-         weights, updateWeight
+        width, setWidth, 
+        resetData, 
+        runGeneration,
+        runUntilDone,
+        stopGeneration,
+        mapRef,
+        randomSeeds,
+        addBorderTop,
+        addBorderBottom,
+        addBorderLeft,
+        addBorderRight,
+        weights, updateWeight,
+        seeds, updateSeed
     } = useContext(MapContext);
 
     const { brush, setBrush, coords } = useContext(BrushContext);
@@ -85,12 +87,20 @@ export const Sidebar = () => {
                 </div>
             </Panel>
 
-            <Panel title="Add Water Border">
+            <Panel title="Add Border">
                 <div className='grid4'>
-                    <button onClick={addWaterBorderTop}>top</button>
-                    <button onClick={addWaterBorderRight}>right</button>
-                    <button onClick={addWaterBorderBottom}>bottom</button>
-                    <button onClick={addWaterBorderLeft}>left</button>
+                    {[
+                        TILE_TYPES.LAND,
+                        TILE_TYPES.WATER,
+                        TILE_TYPES.SNOW,
+                    ].map(type => (
+                        <>
+                            <button className={`button-${type}`} onClick={() => addBorderTop(type)}>top</button>
+                            <button className={`button-${type}`} onClick={() => addBorderRight(type)}>right</button>
+                            <button className={`button-${type}`} onClick={() => addBorderBottom(type)}>bottom</button>
+                            <button className={`button-${type}`} onClick={() => addBorderLeft(type)}>left</button>
+                        </>
+                    ))}
                 </div>
             </Panel>
 
@@ -110,19 +120,33 @@ export const Sidebar = () => {
                     ))}
                     <button onClick={runGeneration}>run generation</button>
                     <button onClick={runUntilDone}>run all</button>
+                    <button onClick={stopGeneration}>stop</button>
                 </div>
             </Panel>
 
-            <Panel title="Commands">
-                <div className='column'>
+            <Panel title="Seeds">
+                <div className='seeds grid2'>
+                    {Object.values(TILE_TYPES).slice(1).map(type => (
+                        <div className='row'>
+                            <button className={`button-${type}`} onClick={() => updateSeed(type, seeds[type] - 1)}>-</button>
+                            <span>{seeds[type]}</span>
+                            <button className={`button-${type}`} onClick={() => updateSeed(type, seeds[type] + 1)}>+</button>
+                        </div>
+                    ))}
                     <button onClick={randomSeeds}>random seeds</button>
-                    <button onClick={exportImage}>export</button>
                 </div>
             </Panel>
+
             
             <Panel>
                 <div className='column'>
                     <button onClick={resetData}>reset</button>
+                </div>
+            </Panel>
+
+            <Panel>
+                <div className='column'>
+                    <button onClick={exportImage}>export</button>
                 </div>
             </Panel>
 

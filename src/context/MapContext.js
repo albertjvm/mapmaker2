@@ -13,17 +13,25 @@ export const TILE_TYPES = {
 };
 
 export const SPEEDS = [
-    .01, .02, .03, .04, .05, .1, .15
+    .01, .02, .05, .07, .1, .15
 ];
 
 export const MapProvider = ({ children }) => {
     const [ weights, setWeights ] = useState({
-        [TILE_TYPES.LAND]: SPEEDS[6],
-        [TILE_TYPES.WATER]: SPEEDS[5],
-        [TILE_TYPES.MOUNTAIN]: SPEEDS[4],
-        [TILE_TYPES.FOREST]: SPEEDS[4],
-        [TILE_TYPES.SNOW]: SPEEDS[5],
-        [TILE_TYPES.DESERT]: SPEEDS[4],
+        [TILE_TYPES.LAND]: SPEEDS[4],
+        [TILE_TYPES.WATER]: SPEEDS[4],
+        [TILE_TYPES.MOUNTAIN]: SPEEDS[3],
+        [TILE_TYPES.FOREST]: SPEEDS[3],
+        [TILE_TYPES.SNOW]: SPEEDS[4],
+        [TILE_TYPES.DESERT]: SPEEDS[3],
+    });
+    const [ seeds, setSeeds ] = useState({
+        [TILE_TYPES.LAND]: 4,
+        [TILE_TYPES.WATER]: 3,
+        [TILE_TYPES.MOUNTAIN]: 2,
+        [TILE_TYPES.FOREST]: 4,
+        [TILE_TYPES.SNOW]: 0,
+        [TILE_TYPES.DESERT]: 1,
     });
     const [ height, setHeight ] = useState(120);
     const [ width, setWidth ] = useState(200);
@@ -37,6 +45,13 @@ export const MapProvider = ({ children }) => {
         setWeights({
             ...weights,
             [type]: value
+        });
+    };
+
+    const updateSeed = (type, value) => {
+        setSeeds({
+            ...seeds,
+            [type]: Math.max(value, 0)
         });
     };
 
@@ -59,6 +74,10 @@ export const MapProvider = ({ children }) => {
             value,
             ...data.slice(i + 1)
         ]);
+    };
+
+    const stopGeneration = () => {
+        clearInterval(timer.current);
     };
 
     const runGeneration = useCallback(() => {
@@ -111,60 +130,54 @@ export const MapProvider = ({ children }) => {
         savedCallback.current = runGeneration
     }, [runGeneration]);
 
-    const SEED_TYPES = [
-        TILE_TYPES.LAND,
-        TILE_TYPES.WATER,
-        TILE_TYPES.MOUNTAIN,
-        TILE_TYPES.FOREST,
-        TILE_TYPES.DESERT,
-    ];
     const randomSeeds = () => {
         const cloneData = [...data];
 
-        SEED_TYPES.forEach(type => {
-            let randI = Math.floor(Math.random() * cloneData.length);
-            cloneData[randI] = cloneData[randI] || type;
+        Object.values(TILE_TYPES).forEach(type => {
+            new Array(seeds[type]).fill(1).forEach(_ => {
+                let randI = Math.floor(Math.random() * cloneData.length);
+                cloneData[randI] = cloneData[randI] || type;
+            })
         });
 
         setData(cloneData);
     };
 
-    const addWaterBorderTop = () => {
+    const addBorderTop = (type) => {
         const cloneData = [...data];
 
         [...Array(width).keys()].forEach(i => {
-            cloneData[i] = TILE_TYPES.WATER;
+            cloneData[i] = type;
         });
 
         setData(cloneData);
     };
 
-    const addWaterBorderBottom = () => {
+    const addBorderBottom = (type) => {
         const cloneData = [...data];
 
         [...Array(width).keys()].forEach(i => {
-            cloneData[(height - 1) * width + i] = TILE_TYPES.WATER;
+            cloneData[(height - 1) * width + i] = type;
         });
 
         setData(cloneData);
     };
 
-    const addWaterBorderLeft = () => {
+    const addBorderLeft = (type) => {
         const cloneData = [...data];
 
         [...Array(height).keys()].forEach(i => {
-            cloneData[i * width] = TILE_TYPES.WATER;
+            cloneData[i * width] = type;
         });
 
         setData(cloneData);
     };
 
-    const addWaterBorderRight = () => {
+    const addBorderRight = (type) => {
         const cloneData = [...data];
-        console.log(width);
 
         [...Array(height).keys()].forEach(i => {
-            cloneData[i * width + width - 1] = TILE_TYPES.WATER;
+            cloneData[i * width + width - 1] = type;
         });
 
         setData(cloneData);
@@ -180,13 +193,15 @@ export const MapProvider = ({ children }) => {
             resetData,
             runGeneration,
             runUntilDone,
+            stopGeneration,
             mapRef,
             randomSeeds,
-            addWaterBorderTop,
-            addWaterBorderBottom,
-            addWaterBorderLeft,
-            addWaterBorderRight,
-            weights, updateWeight
+            addBorderTop,
+            addBorderBottom,
+            addBorderLeft,
+            addBorderRight,
+            weights, updateWeight,
+            seeds, updateSeed
         }}>
             { children }
         </MapContext.Provider>

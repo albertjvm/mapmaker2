@@ -53,6 +53,12 @@
         font-size: small;
     }
 
+    .grid2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 8px;
+    }
+
     .grid4 {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -125,6 +131,31 @@
             &:after {
                 visibility: visible;
             }
+        }
+    }
+
+    .button-1 { background-color: $land; }
+    .button-2 { background-color: $water; }
+    .button-3 { background-color: $mountain; }
+    .button-4 { background-color: $forest; }
+    .button-5 { 
+        background-color: $snow;
+        color: #444;
+    }
+    .button-6 { background-color: $desert; }
+
+    .seeds {
+        .row {
+            justify-content: center;
+
+            button, span {
+                flex: 1;
+            }
+        }
+
+        & > button {
+            margin-top: 4px;
+            grid-column: 1 / -1;
         }
     }
 }

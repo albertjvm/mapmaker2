@@ -32,11 +32,20 @@ export const Map = () => {
     };
 
     const getMousePos = (canvas, e) => {
+        let mouseX, mouseY;
+        if(e.type.startsWith('touch')) {
+            var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+            mouseX = touch.pageX;
+            mouseY = touch.pageY;
+        } else if (e.type.startsWith('mouse')) {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        }
         const rect = canvas.getBoundingClientRect();
         const scaleX = canvas.width / rect.width;
         const scaleY = canvas.height / rect.height;
-        const x = Math.floor((e.clientX - rect.left) * scaleX);
-        const y = Math.floor((e.clientY - rect.top) * scaleY);
+        const x = Math.floor((mouseX - rect.left) * scaleX);
+        const y = Math.floor((mouseY - rect.top) * scaleY);
 
         return {x, y};
     };
@@ -78,26 +87,5 @@ export const Map = () => {
                 onClick={handleCanvasClick}
             />
         </div>
-
-
-        // <div
-        //     className="Map"
-        //     style={{
-        //         gridTemplateColumns: `repeat(${width}, 1fr)`,
-        //         gridTemplateRows: `repeat(${height}, 1fr)`,
-        //     }}
-        //     ref={mapRef}
-        // >
-        //     {data.map((d, i) => (
-        //         <div 
-        //             className={`Map-Tile type-${d}`}
-        //             key={`tile-${i}`}
-        //             onMouseDown={() => handleTileClick(i)}
-        //             onMouseOver={e => handleMouseOver(e, i)}
-        //         >
-
-        //         </div>
-        //     ))}
-        // </div>
     )
 };
