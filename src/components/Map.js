@@ -27,6 +27,7 @@ export const Map = () => {
 
     const handleCanvasClick = (e) => {
         const { x, y } = getMousePos(mapRef.current, e);
+        if (!x || !y) return;
 
         handleTileClick(y * width + x);
     };
@@ -34,7 +35,7 @@ export const Map = () => {
     const getMousePos = (canvas, e) => {
         let mouseX, mouseY;
         if(e.type.startsWith('touch')) {
-            var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+            var touch = e.touches[0] || e.changedTouches[0];
             mouseX = touch.pageX;
             mouseY = touch.pageY;
         } else if (e.type.startsWith('mouse')) {
@@ -46,7 +47,6 @@ export const Map = () => {
         const scaleY = canvas.height / rect.height;
         const x = Math.floor((mouseX - rect.left) * scaleX);
         const y = Math.floor((mouseY - rect.top) * scaleY);
-
         return {x, y};
     };
 
@@ -84,6 +84,7 @@ export const Map = () => {
                 width={width} 
                 onMouseMove={handleMouseOver} 
                 onTouchMove={handleCanvasClick}
+                onTouchStart={handleCanvasClick}
                 onClick={handleCanvasClick}
             />
         </div>
