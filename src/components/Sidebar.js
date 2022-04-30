@@ -95,10 +95,10 @@ export const Sidebar = () => {
                         TILE_TYPES.SNOW,
                     ].map(type => (
                         <>
-                            <button className={`button-${type}`} onClick={() => addBorderTop(type)}>top</button>
-                            <button className={`button-${type}`} onClick={() => addBorderRight(type)}>right</button>
-                            <button className={`button-${type}`} onClick={() => addBorderBottom(type)}>bottom</button>
-                            <button className={`button-${type}`} onClick={() => addBorderLeft(type)}>left</button>
+                            <button key={`bt-${type}`} className={`button-${type}`} onClick={() => addBorderTop(type)}>top</button>
+                            <button key={`br-${type}`} className={`button-${type}`} onClick={() => addBorderRight(type)}>right</button>
+                            <button key={`bb-${type}`} className={`button-${type}`} onClick={() => addBorderBottom(type)}>bottom</button>
+                            <button key={`bl-${type}`} className={`button-${type}`} onClick={() => addBorderLeft(type)}>left</button>
                         </>
                     ))}
                 </div>
@@ -107,7 +107,7 @@ export const Sidebar = () => {
             <Panel title="Generate">
                 <div className='column'>
                     {Object.values(TILE_TYPES).slice(1).map(type => (
-                        <div className='row'>
+                        <div className='row' key={`generate-${type}`}>
                             <span className={`tile tile-${type}`} />
                             <Slider
                                 options={SPEEDS.map((s, i) => ({name: i+1, value: s}))}
@@ -127,7 +127,7 @@ export const Sidebar = () => {
             <Panel title="Seeds">
                 <div className='seeds grid2'>
                     {Object.values(TILE_TYPES).slice(1).map(type => (
-                        <div className='row'>
+                        <div className='row' key={`seed-${type}`}>
                             <button className={`button-${type}`} onClick={() => updateSeed(type, seeds[type] - 1)}>-</button>
                             <span>{seeds[type]}</span>
                             <button className={`button-${type}`} onClick={() => updateSeed(type, seeds[type] + 1)}>+</button>

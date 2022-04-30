@@ -2,7 +2,9 @@
 
 .Map {
     flex: 1;
-    display: grid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     .Map-Tile {
 
@@ -23,8 +25,9 @@
 
 
     canvas {
-        height: 100%;
-        width: 100%;
+        flex: 1;
+        max-height: 100%;
+        max-width: 100%;
         image-rendering: pixelated;
         image-rendering: crisp-edges;
     }

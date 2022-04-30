@@ -16,6 +16,8 @@ export const SPEEDS = [
     .01, .02, .05, .07, .1, .15
 ];
 
+const STORAGE_KEY = 'previousSettings';
+
 export const MapProvider = ({ children }) => {
     const [ weights, setWeights ] = useState({
         [TILE_TYPES.LAND]: SPEEDS[4],
@@ -35,11 +37,37 @@ export const MapProvider = ({ children }) => {
     });
     const [ height, setHeight ] = useState(120);
     const [ width, setWidth ] = useState(200);
+    const [ first, setFirst ] = useState(true);
     const [ data, setData ] = useState([]);
     const mapRef = useRef();
     const savedCallback = useRef();
     const isDone = useRef(false);
     const timer = useRef();
+
+    useEffect(() => {
+        const json = JSON.parse(window.localStorage.getItem(STORAGE_KEY));
+        if (!json) return;
+
+        console.log(json.weights);
+        
+        if (json?.width) setWidth(json.width);
+        if (json?.height) setHeight(json.height);
+        if (json?.weights) setWeights(json.weights);
+        if (json?.seeds) setSeeds(json.seeds);
+    }, []);
+
+    useEffect(() => {
+        if (first) {
+            setFirst(false);
+            return;
+        }
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            width,
+            height,
+            weights,
+            seeds
+        }));
+    }, [first, height, seeds, weights, width]);
 
     const updateWeight = (type, value) => {
         setWeights({
